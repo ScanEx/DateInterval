@@ -7,17 +7,21 @@ nsGmx.DateInterval = Backbone.Model.extend({
     
     saveState: function() {
         return {
-            version: '1.0.0',
+            version: '1.1.0',
             dateBegin: +this.attributes.dateBegin,
             dateEnd: +this.attributes.dateEnd
         }
     },
     
     loadState: function(state) {
-        this.set({
-            dateBegin: new Date(state.dateBegin),
-            dateEnd: new Date(state.dateEnd)
-        })
+        if (!state.version || state.version === '1.1.0' || state.version === '1.0.0') {
+            this.set({
+                dateBegin: new Date(state.dateBegin),
+                dateEnd: new Date(state.dateEnd)
+            })
+        } else {
+            throw 'Unknown state version';
+        }
     }
 }, {
     //number of milliseconds in one day

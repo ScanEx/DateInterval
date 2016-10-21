@@ -48,6 +48,20 @@
                 dateBegin: midnight,
                 dateEnd: new Date(midnight.valueOf() + DateInterval.MS_IN_DAY)
             }
+        },
+
+        // 24+n interval
+        defaultFireDateInterval: function() {
+            var now = new Date(),
+                lastMidnight = DateInterval.toMidnight(now),
+                dateEnd = new Date((now - 1) - (now - 1) % (3600*1000) + 3600*1000), //round to the nearest hour greater then 'now'
+                isTooSmall = dateEnd - lastMidnight < 12*3600*1000,
+                dateBegin = new Date(isTooSmall ? (lastMidnight - nsGmx.DateInterval.MS_IN_DAY) : lastMidnight.valueOf());
+
+            return {
+                dateBegin: dateBegin,
+                dateEnd: dateEnd
+            }
         }
     })
 
